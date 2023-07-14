@@ -117,3 +117,37 @@ logo.classList.add('c');
 logo.classList.remove('c', 'j');
 logo.classList.toggle('c');
 logo.classList.contains('c'); // not includes
+
+// Scrolling info when Learn More is clicked
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  const s1Coords = section1.getBoundingClientRect();
+  console.log('s1Coords', s1Coords); // when Learn More is clicked, you get the DOMRect
+  console.log(e.target.getBoundingClientRect()); // this is the size of the button
+  console.log('Current scroll (X/Y)', window.scrollX, scrollY); // Scroll location 
+
+  // console.log('Height/width of viewport:',
+  //   document.documentElement.clientHeight,
+  //   document.documentElement.clientWidth
+  // );
+  // Scrolling to the Features Section
+  // window.scrollTo(s1Coords.left, s1Coords.top); // however top is relative to the viewport and does not work correctly
+  // window.scrollTo(
+  //   s1Coords.left - window.scrollX, 
+  //   s1Coords.top - window.scrollY) ;// subtracting the current scroll location to fix this
+  // Above works but to make it smooth, need to make an Object
+  // Old school way where we are manually calcuating where to go - 
+  // window.scrollTo(
+  //   {
+  //     left : s1Coords.left - window.scrollX, 
+  //     top : s1Coords.top - window.scrollY,
+  //     behavior : 'smooth'
+  //   }
+  // )
+  // New Way: 
+  section1.scrollIntoView({
+    behavior : 'smooth'
+  })
+})
