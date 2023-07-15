@@ -151,3 +151,37 @@ btnScrollTo.addEventListener('click', function (e) {
     behavior : 'smooth'
   })
 })
+
+// Types of Events and Event Handlers
+// Anything that happens in a browser are events
+// Mouse enter event
+// const h1= document.querySelector('h1'); 
+// h1.addEventListener('mouseenter', function(e){
+//   alert('addEventListener: Great! You are reading the heading')
+// });
+
+// Another way - set on event property directly on the element 
+// const h1= document.querySelector('h1'); 
+
+// h1.onmouseenter = function(e){
+//   alert('onmouseenter: Great! You are reading the heading')
+// };
+
+// Remove event listener
+// Note: Add Event Listener is the newer of the two methods
+// export the function to a name function 
+const alertH1 = function(e){
+    alert('addEventListener: Great! You are reading the heading');
+    // remove the listener after it runs once. 
+    h1.removeEventListener('mouseenter', alertH1);
+}
+
+const h1 = document.querySelector('h1');
+h1.addEventListener('mouseenter', alertH1);
+
+// Can also remove it after some time has passed
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+
+// Another way of handling events. Should not be used(oldschool)
+// In the HTML iteslf
+/* <h1 onclick="alert('HTML alert)"></h1> */
