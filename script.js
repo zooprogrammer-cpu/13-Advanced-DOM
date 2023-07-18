@@ -185,3 +185,33 @@ h1.addEventListener('mouseenter', alertH1);
 // Another way of handling events. Should not be used(oldschool)
 // In the HTML iteslf
 /* <h1 onclick="alert('HTML alert)"></h1> */
+// Bubbling
+// Event Propogation in practice - 
+// rgb(187, 187, 187)
+const randomInt = (min, max) => 
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () => 
+  `rgb(${randomInt(0,255)}, ${randomInt(0,255)}, ${randomInt(0,255)})`
+
+console.log(randomColor());  
+
+document.querySelector('.nav__link').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor();
+  console.log('LINK', e.target, e.currentTarget);
+  // currentTargeet is the element where the listener is attached === this keyword
+  // Stop propagation
+  // e.stopPropagation();// in practice not a good idea
+});
+
+document.querySelector('.nav__links').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor();
+  console.log('CONTAINER', e.target, e.currentTarget);
+});
+
+document.querySelector('.nav').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor();
+  console.log('NAV', e.target, e.currentTarget);
+  }
+);
+
