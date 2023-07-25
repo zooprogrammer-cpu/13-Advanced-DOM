@@ -1,8 +1,9 @@
 'use strict';
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 ///////////////////////////////////////
 // Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -24,9 +25,6 @@ btnsOpenModal.forEach((btn) => {
   btn.addEventListener('click', openModal);
 })
 
-// for (let i = 0; i < btnsOpenModal.length; i++)
-//   btnsOpenModal[i].addEventListener('click', openModal);
-
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
 
@@ -36,182 +34,41 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-///////////////////
-// Selecting elements
-console.log(document.documentElement);
-console.log(document.head);
-console.log(document.body);
-const header = document.querySelector('.header');
-const allSections = document.querySelectorAll('.section');
-console.log(allSections);
-
-document.getElementById('section--1');
-//can use getElementsByTageName to delete.
-//cannot delete with querySelector node list
-const allButtons = document.getElementsByTagName('button');
-console.log(allButtons);
-
-console.log(document.getElementsByClassName('btn'));
-
-//Creating and inserting elements
-//.insertAdjacentHTML - quick and most used. check bankist app
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.textContent = 'We use cookies for improved functionality and analytics';
-message.innerHTML = 'Cookie here. <button class="btn btn--close--cookie">Got it!</button>';
-// cannot have message element at multiples places. 
-// So the append moves the element as the last child. 
-// header.prepend(message);
-header.append(message);
-// header.append(message.cloneNode(true));// this create two
-
-// header.before(message);
-// header.after(message);
-
-// Delete elements
-document.querySelector('.btn--close--cookie').addEventListener('click', function () {
-  message.remove();
-  // older method by dom traversing
-  // message.parentElement.removeChild(message); 
-});
-
-// Styles
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
-
-console.log(message.style.color);
-console.log(message.style.backgroundColor);
-
-console.log(getComputedStyle(message).color);
-console.log(getComputedStyle(message).height);
-
-message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
-
-document.documentElement.style.setProperty('--color-primary', 'orangered')
-
-// Attributes - src, class, alt, id
-
-const logo = document.querySelector('.nav__logo');
-console.log(logo.alt);
-console.log(logo.className);
-logo.alt = 'Beautiful';
-
-// Non- standard attribute
-console.log(logo.designer); // prints undefined
-console.log('desginer is ', logo.getAttribute('designer')); //prints designer is ash
-logo.setAttribute('company', 'Bankist'); // creates a new attribute called company="Bankist"
-
-console.log('logo.src is:', logo.src); // this is the absolute url 
-console.log('logo.getAttribute is:', logo.getAttribute('src')); // this is the relative url 
-
-const link = document.querySelector('.nav__link--btn');
-console.log(link.href); // prints http://127.0.0.1:8080/#
-console.log(link.getAttribute('href')); // prints #
-
-
-//Data attributes
-console.log(logo.dataset.versionNumber);
-
-// Classes
-logo.classList.add('c');
-logo.classList.remove('c', 'j');
-logo.classList.toggle('c');
-logo.classList.contains('c'); // not includes
-
+/////////////////////////////////////////////////
 // Scrolling info when Learn More is clicked
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-
 btnScrollTo.addEventListener('click', function (e) {
-  const s1Coords = section1.getBoundingClientRect();
-  console.log('s1Coords', s1Coords); // when Learn More is clicked, you get the DOMRect
-  console.log(e.target.getBoundingClientRect()); // this is the size of the button
-  console.log('Current scroll (X/Y)', window.scrollX, scrollY); // Scroll location 
-
-  // console.log('Height/width of viewport:',
-  //   document.documentElement.clientHeight,
-  //   document.documentElement.clientWidth
-  // );
-  // Scrolling to the Features Section
-  // window.scrollTo(s1Coords.left, s1Coords.top); // however top is relative to the viewport and does not work correctly
-  // window.scrollTo(
-  //   s1Coords.left - window.scrollX, 
-  //   s1Coords.top - window.scrollY) ;// subtracting the current scroll location to fix this
-  // Above works but to make it smooth, need to make an Object
-  // Old school way where we are manually calcuating where to go - 
-  // window.scrollTo(
-  //   {
-  //     left : s1Coords.left - window.scrollX, 
-  //     top : s1Coords.top - window.scrollY,
-  //     behavior : 'smooth'
-  //   }
-  // )
-  // New Way: 
   section1.scrollIntoView({
-    behavior : 'smooth'
+    behavior: 'smooth'
   })
 })
+////////////////////////////////////////////////
+//Page Navigation with event delegation
+// document.querySelectorAll('.nav__link').forEach(function(el){
+//   el.addEventListener('click', function(e){
+//     e.preventDefault(); 
+//     console.log('LINK');
+//     const id = this.getAttribute('href');
+//     console.log('id:' , id);
+//     document.querySelector(id).scrollIntoView({
+//       behavior: 'smooth'});
+//   })
+// })
+// Event delegation - 
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
 
-// Types of Events and Event Handlers
-// Anything that happens in a browser are events
-// Mouse enter event
-// const h1= document.querySelector('h1'); 
-// h1.addEventListener('mouseenter', function(e){
-//   alert('addEventListener: Great! You are reading the heading')
-// });
-
-// Another way - set on event property directly on the element 
-// const h1= document.querySelector('h1'); 
-
-// h1.onmouseenter = function(e){
-//   alert('onmouseenter: Great! You are reading the heading')
-// };
-
-// Remove event listener
-// Note: Add Event Listener is the newer of the two methods
-// export the function to a name function 
-const alertH1 = function(e){
-    alert('addEventListener: Great! You are reading the heading');
-    // remove the listener after it runs once. 
-    h1.removeEventListener('mouseenter', alertH1);
-}
-
-const h1 = document.querySelector('h1');
-h1.addEventListener('mouseenter', alertH1);
-
-// Can also remove it after some time has passed
-// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
-
-// Another way of handling events. Should not be used(oldschool)
-// In the HTML iteslf
-/* <h1 onclick="alert('HTML alert)"></h1> */
-// Bubbling
-// Event Propogation in practice - 
-// rgb(187, 187, 187)
-const randomInt = (min, max) => 
-  Math.floor(Math.random() * (max - min + 1) + min);
-
-const randomColor = () => 
-  `rgb(${randomInt(0,255)}, ${randomInt(0,255)}, ${randomInt(0,255)})`
-
-console.log(randomColor());  
-
-document.querySelector('.nav__link').addEventListener('click', function(e) {
-  this.style.backgroundColor = randomColor();
-  console.log('LINK', e.target, e.currentTarget);
-  // currentTargeet is the element where the listener is attached === this keyword
-  // Stop propagation
-  // e.stopPropagation();// in practice not a good idea
-});
-
-document.querySelector('.nav__links').addEventListener('click', function(e) {
-  this.style.backgroundColor = randomColor();
-  console.log('CONTAINER', e.target, e.currentTarget);
-});
-
-document.querySelector('.nav').addEventListener('click', function(e) {
-  this.style.backgroundColor = randomColor();
-  console.log('NAV', e.target, e.currentTarget);
+document.querySelector('.nav__links').addEventListener(
+  'click', function (e) {
+    console.log(e.target); // this is where the event actaully happened
+    e.preventDefault(); 
+    // Matching strategy
+    if (e.target.classList.contains('nav__link')) {
+      console.log('LINK');
+      const id = e.target.getAttribute('href');
+      console.log(id);
+      document.querySelector(id).scrollIntoView({
+        behavior : 'smooth'
+      });
+    }
   }
-);
-
+)
